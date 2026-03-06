@@ -1,14 +1,14 @@
-# Zooom3
+# ![icon](easy-move-resize/Images.xcassets/AppIcon.appiconset/icon_32x32.png) Zooom3
 
-A macOS utility that adds **modifier key + mouse** window move and resize, inspired by X11/Linux window managers and the classic [Zooom/2](http://coderage-software.com/zooom/) app.
+A macOS utility that adds **modifier key + mouse** window move and resize, inspired by X11/Linux window managers and the classic [Zooom2](https://roaringapps.com/app/zooom2) app.
 
-Zooom3 is a fork of [Easy Move+Resize](https://github.com/dmarcotte/easy-move-resize) by Daniel Marcotte, with additional features to match the Zooom/2 experience.
+Zooom3 is a fork of [Easy Move+Resize](https://github.com/dmarcotte/easy-move-resize) by Daniel Marcotte, with additional features to match the Zooom2 experience.
 
 ## Features
 
 - **Move windows**: Hold modifier keys + left-click drag anywhere in a window
 - **Resize windows**: Hold modifier keys + right-click drag (direction based on cursor position in the window's thirds grid)
-- **Hover mode**: Hold modifier keys and windows move/resize as the mouse moves — no click needed (like Zooom/2)
+- **Hover mode**: Hold modifier keys and windows move/resize as the mouse moves — no click needed (like Zooom2)
 - **Customizable modifiers**: Choose any combination of Cmd, Ctrl, Alt, Shift, Fn
 - **Separate resize modifiers**: Configure different modifier keys for resize
 - **Per-app disable**: Disable Zooom3 for specific applications
