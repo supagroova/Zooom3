@@ -1,10 +1,10 @@
-// Preferences can alternativevly be managed from the Terminal:
+// Preferences can alternatively be managed from the Terminal:
 //   Read:
-//     `defaults read org.dmarcotte.Easy-Move-Resize ModifierFlags CMD,CTRL`
+//     `defaults read com.supagroova.zooom3 ModifierFlags`
 //   Write:
-//     `defaults write org.dmarcotte.Easy-Move-Resize ModifierFlags CMD,CTRL`
+//     `defaults write com.supagroova.zooom3 ModifierFlags CMD,CTRL`
 //   Note that deleting this preference or writing invalid keys may cause trouble and require that
-//     you choose "Reset to Defaults from the app menu.
+//     you choose "Reset to Defaults" from the app menu.
 #ifndef EMRPreferences_h
 #define EMRPreferences_h
 

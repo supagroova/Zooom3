@@ -14,7 +14,7 @@
 - (void)setUp {
     [super setUp];
     NSString *uuid = [[NSUUID UUID] UUIDString];
-    testDefaultsName = [@"org.dmarcotte.Easy-Move-Resize." stringByAppendingString:uuid];
+    testDefaultsName = [@"com.supagroova.zooom3.test." stringByAppendingString:uuid];
     testDefaults = [[NSUserDefaults alloc] initWithSuiteName:testDefaultsName];
     preferences = [[EMRPreferences alloc] initWithUserDefaults:testDefaults];
 }
@@ -28,7 +28,7 @@
 
 - (EMRPreferences *)createV1PreferencesWithModifiers:(NSString *)flags middleClick:(BOOL)middleClick {
     NSString *uuid = [[NSUUID UUID] UUIDString];
-    NSString *suiteName = [@"org.dmarcotte.Easy-Move-Resize.v1." stringByAppendingString:uuid];
+    NSString *suiteName = [@"com.supagroova.zooom3.test.v1." stringByAppendingString:uuid];
     NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:suiteName];
 
     // Write v1-style preferences (no version key, no resize-specific keys)
@@ -141,7 +141,7 @@
     // setUp already creates a fresh preferences with setToDefaults called,
     // but let's test the nil-key path explicitly
     NSString *uuid = [[NSUUID UUID] UUIDString];
-    NSString *suiteName = [@"org.dmarcotte.Easy-Move-Resize.niltest." stringByAppendingString:uuid];
+    NSString *suiteName = [@"com.supagroova.zooom3.test.niltest." stringByAppendingString:uuid];
     NSUserDefaults *freshDefaults = [[NSUserDefaults alloc] initWithSuiteName:suiteName];
     // setToDefaults will be called by init since ModifierFlags is nil
     EMRPreferences *freshPrefs = [[EMRPreferences alloc] initWithUserDefaults:freshDefaults];
@@ -206,7 +206,7 @@
 - (void)testMigrationRunsOnlyOnce {
     // Create v1 prefs, triggering migration
     NSString *uuid = [[NSUUID UUID] UUIDString];
-    NSString *suiteName = [@"org.dmarcotte.Easy-Move-Resize.migrateonce." stringByAppendingString:uuid];
+    NSString *suiteName = [@"com.supagroova.zooom3.test.migrateonce." stringByAppendingString:uuid];
     NSUserDefaults *defaults = [[NSUserDefaults alloc] initWithSuiteName:suiteName];
     [defaults setObject:@"CMD,ALT" forKey:MODIFIER_FLAGS_DEFAULTS_KEY];
     [defaults setBool:YES forKey:SHOULD_MIDDLE_CLICK_RESIZE];

@@ -42,7 +42,7 @@
 		AA0001021A229C34002259F2 /* EMRMoveResizeTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMRMoveResizeTest.m; sourceTree = "<group>"; };
 		AA0001041A229C34002259F2 /* EMRAppDelegateTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMRAppDelegateTest.m; sourceTree = "<group>"; };
 		6E238EE0184504BC00E47948 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		6ED47B61183BF3E800859244 /* Easy Move+Resize.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Easy Move+Resize.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6ED47B61183BF3E800859244 /* Easy Move+Resize.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Zooom3.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6ED47B64183BF3E800859244 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		6ED47B67183BF3E800859244 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		6ED47B68183BF3E800859244 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
@@ -331,9 +331,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.dmarcotte.easy-move-resizeTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.supagroova.zooom3-tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Easy Move+Resize.app/Contents/MacOS/Easy Move+Resize";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Zooom3.app/Contents/MacOS/Zooom3";
 			};
 			name = Debug;
 		};
@@ -353,9 +353,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.dmarcotte.easy-move-resizeTests";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.supagroova.zooom3-tests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Easy Move+Resize.app/Contents/MacOS/Easy Move+Resize";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Zooom3.app/Contents/MacOS/Zooom3";
 			};
 			name = Release;
 		};
@@ -459,8 +459,8 @@
 				GCC_PREFIX_HEADER = "easy-move-resize/easy-move-resize-Prefix.pch";
 				INFOPLIST_FILE = "easy-move-resize/easy-move-resize-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.dmarcotte.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "Easy Move+Resize";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.supagroova.zooom3";
+				PRODUCT_NAME = "Zooom3";
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};
@@ -475,8 +475,8 @@
 				GCC_PREFIX_HEADER = "easy-move-resize/easy-move-resize-Prefix.pch";
 				INFOPLIST_FILE = "easy-move-resize/easy-move-resize-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
-				PRODUCT_BUNDLE_IDENTIFIER = "org.dmarcotte.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "Easy Move+Resize";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.supagroova.zooom3";
+				PRODUCT_NAME = "Zooom3";
 				SDKROOT = macosx;
 				WRAPPER_EXTENSION = app;
 			};

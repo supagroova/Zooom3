@@ -633,7 +633,7 @@ CGEventRef myCGEventCallback(CGEventTapProxy __unused proxy, CGEventType type, C
 }
 
 - (void)buildMenu {
-    // XIB provides: [0] "Easy Move+Resize" (title), [1] "Disabled", [2] separator,
+    // XIB provides: [0] "Zooom3" (title), [1] "Disabled", [2] separator,
     //               [3] "Bring Window to Front", [4] "Resize only", ...
     // We insert programmatic Move/Resize sections at index 3 (before "Bring Window to Front").
     NSInteger insertIdx = 3;
