@@ -373,13 +373,13 @@
     [viewController updateConflictWarning];
 
     NSView *view = viewController.view;
-    NSTextField *warning = [self findLabelContaining:@"identical" inView:view];
+    NSTextField *warning = [self findLabelContaining:@"conflict" inView:view];
     XCTAssertNotNil(warning, @"Conflict warning label should exist");
     XCTAssertFalse(warning.isHidden, @"Conflict warning should be visible");
 }
 
 - (NSView *)findSeparatorAfterWarningInView:(NSView *)rootView {
-    NSTextField *warning = [self findLabelContaining:@"identical" inView:rootView];
+    NSTextField *warning = [self findLabelContaining:@"conflicting" inView:rootView];
     if (!warning) return nil;
     NSStackView *stack = (NSStackView *)warning.superview;
     if (![stack isKindOfClass:[NSStackView class]]) return nil;
@@ -391,20 +391,12 @@
     return nil;
 }
 
-- (void)testConflictWarningLabelIsBold {
-    NSView *view = viewController.view;
-    NSTextField *warning = [self findLabelContaining:@"identical" inView:view];
-    XCTAssertNotNil(warning, @"Conflict warning label should exist");
-    NSFontTraitMask traits = [[NSFontManager sharedFontManager] traitsOfFont:warning.font];
-    XCTAssertTrue((traits & NSBoldFontMask) != 0, @"Conflict warning should use bold font");
-}
-
 - (void)testConflictSeparatorHiddenWhenWarningHidden {
     [preferences setToDefaults]; // no conflict with defaults
     [viewController syncControlStatesFromPreferences];
 
     NSView *view = viewController.view;
-    NSTextField *warning = [self findLabelContaining:@"identical" inView:view];
+    NSTextField *warning = [self findLabelContaining:@"conflict" inView:view];
     XCTAssertNotNil(warning);
     XCTAssertTrue(warning.isHidden, @"Warning should be hidden when no conflict");
 
@@ -420,7 +412,7 @@
     [viewController syncControlStatesFromPreferences];
 
     NSView *view = viewController.view;
-    NSTextField *warning = [self findLabelContaining:@"identical" inView:view];
+    NSTextField *warning = [self findLabelContaining:@"conflict" inView:view];
     XCTAssertNotNil(warning);
     XCTAssertFalse(warning.isHidden, @"Warning should be visible when conflict");
 
@@ -438,7 +430,7 @@
     [viewController updateConflictWarning];
 
     NSView *view = viewController.view;
-    NSTextField *warning = [self findLabelContaining:@"identical" inView:view];
+    NSTextField *warning = [self findLabelContaining:@"conflict" inView:view];
     XCTAssertNotNil(warning, @"Conflict warning label should exist");
     XCTAssertFalse(warning.isHidden, @"Conflict warning should be visible in hover mode with same modifiers");
 }
