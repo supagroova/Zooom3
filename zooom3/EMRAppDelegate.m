@@ -573,23 +573,50 @@ CGEventRef myCGEventCallback(CGEventTapProxy __unused proxy, CGEventType type, C
     statusItem.button.action = @selector(togglePopover:);
 }
 
-- (void)togglePopover:(id)sender {
+- (void)ensurePopoverCreated {
     if (popover == nil) {
         popoverVC = [[EMRPopoverViewController alloc] initWithPreferences:preferences];
         popover = [[NSPopover alloc] init];
         popover.contentViewController = popoverVC;
         popover.behavior = NSPopoverBehaviorSemitransient;
+        popover.delegate = self;
 
         // Wire up popover control actions
         [self wirePopoverActions];
     }
+}
+
+- (void)togglePopover:(id)sender {
+    [self ensurePopoverCreated];
 
     if (popover.isShown) {
         [popover performClose:sender];
     } else {
         [popoverVC syncControlStatesFromPreferences];
         [popover showRelativeToRect:statusItem.button.bounds ofView:statusItem.button preferredEdge:NSMinYEdge];
+        [self installPopoverEventMonitor];
     }
+}
+
+- (void)installPopoverEventMonitor {
+    if (popoverEventMonitor != nil) return;
+    popoverEventMonitor = [NSEvent addGlobalMonitorForEventsMatchingMask:(NSEventMaskLeftMouseDown | NSEventMaskRightMouseDown)
+                                                                handler:^(NSEvent *event) {
+        if (self->popover.isShown) {
+            [self->popover performClose:nil];
+        }
+    }];
+}
+
+- (void)removePopoverEventMonitor {
+    if (popoverEventMonitor != nil) {
+        [NSEvent removeMonitor:popoverEventMonitor];
+        popoverEventMonitor = nil;
+    }
+}
+
+- (void)popoverDidClose:(NSNotification *)notification {
+    [self removePopoverEventMonitor];
 }
 
 - (void)wirePopoverActions {

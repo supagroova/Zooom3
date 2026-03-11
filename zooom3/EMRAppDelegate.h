@@ -2,7 +2,7 @@
 
 @class EMRPopoverViewController;
 
-@interface EMRAppDelegate : NSObject <NSApplicationDelegate> {
+@interface EMRAppDelegate : NSObject <NSApplicationDelegate, NSPopoverDelegate> {
     NSStatusItem * statusItem;
     int keyModifierFlags;
     int resizeKeyModifierFlags;
@@ -13,6 +13,7 @@
 
     NSPopover *popover;
     EMRPopoverViewController *popoverVC;
+    id popoverEventMonitor;
 
     BOOL cachedHoverModeEnabled;
 }

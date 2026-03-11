@@ -29,6 +29,7 @@
 
     // Conflict warning
     NSTextField *_conflictWarningLabel;
+    NSView *_conflictSeparator;
 
     // Action buttons
     NSButton *_resetButton;
@@ -97,12 +98,14 @@
     [stack addArrangedSubview:[self createSeparator]];
 
     // Conflict warning
-    _conflictWarningLabel = [self createLabel:@"Move and resize shortcuts are identical!" bold:NO];
+    _conflictWarningLabel = [self createLabel:@"⚠️ Shortcuts are conflicting" bold:NO];
     _conflictWarningLabel.textColor = [NSColor systemRedColor];
     _conflictWarningLabel.hidden = YES;
     [stack addArrangedSubview:_conflictWarningLabel];
 
-    [stack addArrangedSubview:[self createSeparator]];
+    _conflictSeparator = [self createSeparator];
+    _conflictSeparator.hidden = YES;
+    [stack addArrangedSubview:_conflictSeparator];
 
     // Boolean toggles
     _hoverModeCheckbox = [self createCheckbox:@"Hover to Move/Resize (no click)" identifier:@"hoverMode"];
@@ -263,7 +266,9 @@
 
 - (void)updateConflictWarning {
     (void)[self view];
-    _conflictWarningLabel.hidden = ![_preferences hasConflictingConfig];
+    BOOL hasConflict = [_preferences hasConflictingConfig];
+    _conflictWarningLabel.hidden = !hasConflict;
+    _conflictSeparator.hidden = !hasConflict;
 }
 
 @end

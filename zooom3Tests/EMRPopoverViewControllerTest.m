@@ -378,6 +378,57 @@
     XCTAssertFalse(warning.isHidden, @"Conflict warning should be visible");
 }
 
+- (NSView *)findSeparatorAfterWarningInView:(NSView *)rootView {
+    NSTextField *warning = [self findLabelContaining:@"identical" inView:rootView];
+    if (!warning) return nil;
+    NSStackView *stack = (NSStackView *)warning.superview;
+    if (![stack isKindOfClass:[NSStackView class]]) return nil;
+    NSArray *arranged = stack.arrangedSubviews;
+    NSUInteger idx = [arranged indexOfObject:warning];
+    if (idx == NSNotFound || idx + 1 >= arranged.count) return nil;
+    NSView *next = arranged[idx + 1];
+    if ([next isKindOfClass:[NSBox class]]) return next;
+    return nil;
+}
+
+- (void)testConflictWarningLabelIsBold {
+    NSView *view = viewController.view;
+    NSTextField *warning = [self findLabelContaining:@"identical" inView:view];
+    XCTAssertNotNil(warning, @"Conflict warning label should exist");
+    NSFontTraitMask traits = [[NSFontManager sharedFontManager] traitsOfFont:warning.font];
+    XCTAssertTrue((traits & NSBoldFontMask) != 0, @"Conflict warning should use bold font");
+}
+
+- (void)testConflictSeparatorHiddenWhenWarningHidden {
+    [preferences setToDefaults]; // no conflict with defaults
+    [viewController syncControlStatesFromPreferences];
+
+    NSView *view = viewController.view;
+    NSTextField *warning = [self findLabelContaining:@"identical" inView:view];
+    XCTAssertNotNil(warning);
+    XCTAssertTrue(warning.isHidden, @"Warning should be hidden when no conflict");
+
+    NSView *separator = [self findSeparatorAfterWarningInView:view];
+    XCTAssertNotNil(separator, @"Separator after warning should exist");
+    XCTAssertTrue(separator.isHidden, @"Separator after warning should be hidden when warning is hidden");
+}
+
+- (void)testConflictSeparatorVisibleWhenWarningVisible {
+    [preferences setToDefaults];
+    [preferences setMoveMouseButton:EMRMouseButtonLeft];
+    [preferences setResizeMouseButton:EMRMouseButtonLeft];
+    [viewController syncControlStatesFromPreferences];
+
+    NSView *view = viewController.view;
+    NSTextField *warning = [self findLabelContaining:@"identical" inView:view];
+    XCTAssertNotNil(warning);
+    XCTAssertFalse(warning.isHidden, @"Warning should be visible when conflict");
+
+    NSView *separator = [self findSeparatorAfterWarningInView:view];
+    XCTAssertNotNil(separator, @"Separator after warning should exist");
+    XCTAssertFalse(separator.isHidden, @"Separator after warning should be visible when warning is visible");
+}
+
 - (void)testConflictWarningVisibleInHoverModeWithSameModifiers {
     [preferences setToDefaults];
     [preferences setHoverModeEnabled:YES];
