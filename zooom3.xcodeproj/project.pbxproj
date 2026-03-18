@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1322FE5C2F62DAB1003A9CF9 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1322FE5B2F62DAB1003A9CF9 /* Preferences.swift */; };
 		1322FE5F2F62DAD7003A9CF9 /* PreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1322FE5E2F62DAD7003A9CF9 /* PreferencesTests.swift */; };
+		DD000001A0000001000000A1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000002A0000002000000A2 /* SettingsView.swift */; };
+		DD000003A0000003000000A3 /* SettingsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000004A0000004000000A4 /* SettingsViewTests.swift */; };
 		6ED47B65183BF3E800859244 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ED47B64183BF3E800859244 /* Cocoa.framework */; };
 		6ED47B6F183BF3E800859244 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6ED47B6D183BF3E800859244 /* InfoPlist.strings */; };
 		6ED47B71183BF3E800859244 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ED47B70183BF3E800859244 /* main.m */; };
@@ -62,6 +64,8 @@
 		CC000002A0000002000000A2 /* EMRPopoverViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMRPopoverViewController.h; sourceTree = "<group>"; };
 		CC000003A0000003000000A3 /* EMRPopoverViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMRPopoverViewController.m; sourceTree = "<group>"; };
 		CC000006A0000006000000A6 /* EMRPopoverViewControllerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMRPopoverViewControllerTest.m; sourceTree = "<group>"; };
+		DD000002A0000002000000A2 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		DD000004A0000004000000A4 /* SettingsViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewTests.swift; sourceTree = "<group>"; };
 		F907A0E10208B2B4C63E46E3 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		F907A3568D9301F4E6A9736F /* contributing.md */ = {isa = PBXFileReference; lastKnownFileType = file.md; path = contributing.md; sourceTree = "<group>"; };
 		F907A4D20267246716869421 /* readme.md */ = {isa = PBXFileReference; lastKnownFileType = file.md; path = readme.md; sourceTree = "<group>"; };
@@ -96,6 +100,7 @@
 				AA0001021A229C34002259F2 /* EMRMoveResizeTest.m */,
 				AA0001041A229C34002259F2 /* EMRAppDelegateTest.m */,
 				CC000006A0000006000000A6 /* EMRPopoverViewControllerTest.m */,
+				DD000004A0000004000000A4 /* SettingsViewTests.swift */,
 				65CF01661F229C34002259F2 /* Info.plist */,
 			);
 			path = zooom3Tests;
@@ -161,6 +166,7 @@
 				F907AEB04B0AF90540F6EF00 /* EMRMoveResize.m */,
 				CC000002A0000002000000A2 /* EMRPopoverViewController.h */,
 				CC000003A0000003000000A3 /* EMRPopoverViewController.m */,
+				DD000002A0000002000000A2 /* SettingsView.swift */,
 			);
 			path = zooom3;
 			sourceTree = "<group>";
@@ -286,6 +292,7 @@
 				AA0001031A229C34002259F2 /* EMRAppDelegateTest.m in Sources */,
 				1322FE5F2F62DAD7003A9CF9 /* PreferencesTests.swift in Sources */,
 				CC000005A0000005000000A5 /* EMRPopoverViewControllerTest.m in Sources */,
+				DD000003A0000003000000A3 /* SettingsViewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,6 +305,7 @@
 				6ED47B78183BF3E800859244 /* EMRAppDelegate.m in Sources */,
 				F907A25928093AED2C89550E /* EMRMoveResize.m in Sources */,
 				CC000001A0000001000000A1 /* EMRPopoverViewController.m in Sources */,
+				DD000001A0000001000000A1 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
