@@ -1,6 +1,5 @@
 #import "EMRAppDelegate.h"
 #import "EMRMoveResize.h"
-#import "EMRPopoverViewController.h"
 #import "Zooom3-Swift.h"
 
 #define ALL_MODIFIERS (kCGEventFlagMaskShift | kCGEventFlagMaskCommand | \
@@ -137,8 +136,12 @@ float getMinRefreshInterval(void) {
     return minInterval;
 }
 
+@interface EMRAppDelegate () <SettingsViewDelegate>
+@end
+
 @implementation EMRAppDelegate {
     Preferences *preferences;
+    SettingsViewBridge *settingsBridge;
 }
 
 - (id) init  {
@@ -575,14 +578,14 @@ CGEventRef myCGEventCallback(CGEventTapProxy __unused proxy, CGEventType type, C
 
 - (void)ensurePopoverCreated {
     if (popover == nil) {
-        popoverVC = [[EMRPopoverViewController alloc] initWithPreferences:preferences];
-        popover = [[NSPopover alloc] init];
-        popover.contentViewController = popoverVC;
-        popover.behavior = NSPopoverBehaviorSemitransient;
-        popover.delegate = self;
-
-        // Wire up popover control actions
-        [self wirePopoverActions];
+        if (@available(macOS 13.0, *)) {
+            settingsBridge = [[SettingsViewBridge alloc] initWithPreferences:preferences];
+            settingsBridge.delegate = self;
+            popover = [[NSPopover alloc] init];
+            popover.contentViewController = settingsBridge.viewController;
+            popover.behavior = NSPopoverBehaviorSemitransient;
+            popover.delegate = self;
+        }
     }
 }
 
@@ -592,7 +595,9 @@ CGEventRef myCGEventCallback(CGEventTapProxy __unused proxy, CGEventType type, C
     if (popover.isShown) {
         [popover performClose:sender];
     } else {
-        [popoverVC syncControlStatesFromPreferences];
+        if (@available(macOS 13.0, *)) {
+            [settingsBridge syncFromPreferences];
+        }
         [popover showRelativeToRect:statusItem.button.bounds ofView:statusItem.button preferredEdge:NSMinYEdge];
         [self installPopoverEventMonitor];
     }
@@ -619,64 +624,6 @@ CGEventRef myCGEventCallback(CGEventTapProxy __unused proxy, CGEventType type, C
     [self removePopoverEventMonitor];
 }
 
-- (void)wirePopoverActions {
-    NSView *rootView = popoverVC.view;
-    [self wireCheckboxActionsInView:rootView];
-    [self wirePopUpButtonActionsInView:rootView];
-}
-
-- (void)wireCheckboxActionsInView:(NSView *)view {
-    if ([view isKindOfClass:[NSButton class]] && ![view isKindOfClass:[NSPopUpButton class]]) {
-        NSButton *btn = (NSButton *)view;
-        NSString *ident = btn.identifier;
-        if (ident == nil) goto recurse;
-
-        if ([ident hasPrefix:@"move."]) {
-            btn.target = self;
-            btn.action = @selector(modifierToggle:);
-        } else if ([ident hasPrefix:@"resize."]) {
-            btn.target = self;
-            btn.action = @selector(resizeModifierToggle:);
-        } else if ([ident isEqualToString:@"hoverMode"]) {
-            btn.target = self;
-            btn.action = @selector(toggleHoverMode:);
-        } else if ([ident isEqualToString:@"bringToFront"]) {
-            btn.target = self;
-            btn.action = @selector(toggleBringWindowToFront:);
-        } else if ([ident isEqualToString:@"resizeOnly"]) {
-            btn.target = self;
-            btn.action = @selector(toggleResizeOnly:);
-        } else if ([ident isEqualToString:@"resetToDefaults"]) {
-            btn.target = self;
-            btn.action = @selector(resetToDefaults:);
-        } else if ([ident isEqualToString:@"quit"]) {
-            btn.target = self;
-            btn.action = @selector(exitApp:);
-        }
-    }
-recurse:
-    for (NSView *subview in view.subviews) {
-        [self wireCheckboxActionsInView:subview];
-    }
-}
-
-- (void)wirePopUpButtonActionsInView:(NSView *)view {
-    if ([view isKindOfClass:[NSPopUpButton class]]) {
-        NSPopUpButton *popup = (NSPopUpButton *)view;
-        NSString *ident = popup.identifier;
-        if ([ident isEqualToString:@"moveMouseButton"]) {
-            popup.target = self;
-            popup.action = @selector(setMoveMouseButton:);
-        } else if ([ident isEqualToString:@"resizeMouseButton"]) {
-            popup.target = self;
-            popup.action = @selector(setResizeMouseButton:);
-        }
-    }
-    for (NSView *subview in view.subviews) {
-        [self wirePopUpButtonActionsInView:subview];
-    }
-}
-
 - (void)enableRunLoopSource:(EMRMoveResize*)moveResize {
     CFRunLoopAddSource(CFRunLoopGetCurrent(), [moveResize runLoopSource], kCFRunLoopCommonModes);
     CGEventTapEnable([moveResize eventTap], true);
@@ -687,90 +634,39 @@ recurse:
     CFRunLoopRemoveSource(CFRunLoopGetCurrent(), [moveResize runLoopSource], kCFRunLoopCommonModes);
 }
 
-#pragma mark - IBActions
+#pragma mark - SettingsViewDelegate
 
-- (IBAction)modifierToggle:(id)sender {
-    NSButton *btn = (NSButton *)sender;
-    // Extract modifier key from identifier (e.g. "move.CMD" -> "CMD")
-    NSString *ident = btn.identifier;
-    NSString *key = [ident substringFromIndex:[@"move." length]];
-    BOOL enabled = (btn.state == NSControlStateValueOn);
-    [preferences setModifierKey:key enabled:enabled];
+- (void)settingsDidChangeModifiers {
     [self refreshCachedPreferences];
-    [popoverVC updateConflictWarning];
 }
 
-- (IBAction)resizeModifierToggle:(id)sender {
-    NSButton *btn = (NSButton *)sender;
-    NSString *ident = btn.identifier;
-    NSString *key = [ident substringFromIndex:[@"resize." length]];
-    BOOL enabled = (btn.state == NSControlStateValueOn);
-    [preferences setResizeModifierKey:key enabled:enabled];
+- (void)settingsDidChangeMouseButton {
     [self refreshCachedPreferences];
-    [popoverVC updateConflictWarning];
 }
 
-- (IBAction)resetToDefaults:(id)sender {
-    EMRMoveResize* moveResize = [EMRMoveResize instance];
-    [moveResize setIsHoverActive:NO];
-    [moveResize setTracking:0];
-    [moveResize setIsResizing:NO];
-    [preferences setToDefaults];
-    [popoverVC syncControlStatesFromPreferences];
-    [self enableRunLoopSource:moveResize];
-    [self refreshCachedPreferences];
-    [self recreateEventTap];
-}
-
-- (IBAction)toggleBringWindowToFront:(id)sender {
-    NSButton *btn = (NSButton *)sender;
-    [preferences setShouldBringWindowToFront:(btn.state == NSControlStateValueOn)];
-}
-
-- (IBAction)toggleDisabled:(id)sender {
-    // Disabled toggle is no longer in the popover (was menu-only)
-}
-
-- (IBAction)toggleResizeOnly:(id)sender {
-    NSButton *btn = (NSButton *)sender;
-    [preferences setResizeOnly:(btn.state == NSControlStateValueOn)];
-}
-
-- (IBAction)toggleHoverMode:(id)sender {
-    NSButton *btn = (NSButton *)sender;
-    BOOL enabled = (btn.state == NSControlStateValueOn);
-    [preferences setHoverModeEnabled:enabled];
-
-    if (!enabled) {
+- (void)settingsDidToggleHoverMode {
+    if (!preferences.hoverModeEnabled) {
         EMRMoveResize *moveResize = [EMRMoveResize instance];
         [moveResize setIsHoverActive:NO];
         [moveResize setTracking:0];
         [moveResize setIsResizing:NO];
     }
-
     [self refreshCachedPreferences];
     [self recreateEventTap];
-    [popoverVC syncControlStatesFromPreferences];
 }
 
-- (IBAction)setMoveMouseButton:(id)sender {
-    NSPopUpButton *popup = (NSPopUpButton *)sender;
-    int button = (int)[[popup selectedItem] tag];
-    [preferences setMoveMouseButton:(int)button];
+- (void)settingsDidReset {
+    EMRMoveResize *moveResize = [EMRMoveResize instance];
+    [moveResize setIsHoverActive:NO];
+    [moveResize setTracking:0];
+    [moveResize setIsResizing:NO];
+    [preferences setToDefaults];
+    [self enableRunLoopSource:moveResize];
     [self refreshCachedPreferences];
-    [popoverVC updateConflictWarning];
+    [self recreateEventTap];
 }
 
-- (IBAction)setResizeMouseButton:(id)sender {
-    NSPopUpButton *popup = (NSPopUpButton *)sender;
-    int button = (int)[[popup selectedItem] tag];
-    [preferences setResizeMouseButton:(int)button];
-    [self refreshCachedPreferences];
-    [popoverVC updateConflictWarning];
-}
-
-
-- (void)exitApp:(id)sender {
+- (void)settingsDidQuit {
     [NSApp terminate:nil];
 }
 

@@ -20,8 +20,6 @@
 		AA0001011A229C34002259F2 /* EMRMoveResizeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0001021A229C34002259F2 /* EMRMoveResizeTest.m */; };
 		AA0001031A229C34002259F2 /* EMRAppDelegateTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0001041A229C34002259F2 /* EMRAppDelegateTest.m */; };
 		B02F18934323BB42D8CCAB05 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B02F125CE1BC18D269C53372 /* QuartzCore.framework */; };
-		CC000001A0000001000000A1 /* EMRPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC000003A0000003000000A3 /* EMRPopoverViewController.m */; };
-		CC000005A0000005000000A5 /* EMRPopoverViewControllerTest.m in Sources */ = {isa = PBXBuildFile; fileRef = CC000006A0000006000000A6 /* EMRPopoverViewControllerTest.m */; };
 		F907A25928093AED2C89550E /* EMRMoveResize.m in Sources */ = {isa = PBXBuildFile; fileRef = F907AEB04B0AF90540F6EF00 /* EMRMoveResize.m */; };
 		F907A53FB2CAEBEB31895CD2 /* contributing.md in Resources */ = {isa = PBXBuildFile; fileRef = F907A3568D9301F4E6A9736F /* contributing.md */; };
 		F907ABDDEEAF5BF83F0AF9EA /* readme.md in Resources */ = {isa = PBXBuildFile; fileRef = F907A4D20267246716869421 /* readme.md */; };
@@ -61,9 +59,6 @@
 		AA0001021A229C34002259F2 /* EMRMoveResizeTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMRMoveResizeTest.m; sourceTree = "<group>"; };
 		AA0001041A229C34002259F2 /* EMRAppDelegateTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMRAppDelegateTest.m; sourceTree = "<group>"; };
 		B02F125CE1BC18D269C53372 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		CC000002A0000002000000A2 /* EMRPopoverViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = EMRPopoverViewController.h; sourceTree = "<group>"; };
-		CC000003A0000003000000A3 /* EMRPopoverViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMRPopoverViewController.m; sourceTree = "<group>"; };
-		CC000006A0000006000000A6 /* EMRPopoverViewControllerTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMRPopoverViewControllerTest.m; sourceTree = "<group>"; };
 		DD000002A0000002000000A2 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DD000004A0000004000000A4 /* SettingsViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewTests.swift; sourceTree = "<group>"; };
 		F907A0E10208B2B4C63E46E3 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
@@ -99,7 +94,6 @@
 			children = (
 				AA0001021A229C34002259F2 /* EMRMoveResizeTest.m */,
 				AA0001041A229C34002259F2 /* EMRAppDelegateTest.m */,
-				CC000006A0000006000000A6 /* EMRPopoverViewControllerTest.m */,
 				DD000004A0000004000000A4 /* SettingsViewTests.swift */,
 				65CF01661F229C34002259F2 /* Info.plist */,
 			);
@@ -164,8 +158,6 @@
 				6ED47B6B183BF3E800859244 /* Supporting Files */,
 				F907ACD4ED7B8961880D12BD /* EMRMoveResize.h */,
 				F907AEB04B0AF90540F6EF00 /* EMRMoveResize.m */,
-				CC000002A0000002000000A2 /* EMRPopoverViewController.h */,
-				CC000003A0000003000000A3 /* EMRPopoverViewController.m */,
 				DD000002A0000002000000A2 /* SettingsView.swift */,
 			);
 			path = zooom3;
@@ -291,7 +283,6 @@
 				AA0001011A229C34002259F2 /* EMRMoveResizeTest.m in Sources */,
 				AA0001031A229C34002259F2 /* EMRAppDelegateTest.m in Sources */,
 				1322FE5F2F62DAD7003A9CF9 /* PreferencesTests.swift in Sources */,
-				CC000005A0000005000000A5 /* EMRPopoverViewControllerTest.m in Sources */,
 				DD000003A0000003000000A3 /* SettingsViewTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -304,7 +295,6 @@
 				1322FE5C2F62DAB1003A9CF9 /* Preferences.swift in Sources */,
 				6ED47B78183BF3E800859244 /* EMRAppDelegate.m in Sources */,
 				F907A25928093AED2C89550E /* EMRMoveResize.m in Sources */,
-				CC000001A0000001000000A1 /* EMRPopoverViewController.m in Sources */,
 				DD000001A0000001000000A1 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,4 +1,47 @@
 import SwiftUI
+import AppKit
+
+// MARK: - ObjC bridge for EMRAppDelegate
+
+@objc protocol SettingsViewDelegate: AnyObject {
+    func settingsDidChangeModifiers()
+    func settingsDidChangeMouseButton()
+    func settingsDidToggleHoverMode()
+    func settingsDidReset()
+    func settingsDidQuit()
+}
+
+@available(macOS 13.0, *)
+@objc class SettingsViewBridge: NSObject {
+    @objc let viewController: NSViewController
+    @objc weak var delegate: SettingsViewDelegate?
+
+    @objc init(preferences: Preferences) {
+        let callbacks = SettingsCallbacks()
+        let view = SettingsView(preferences: preferences, callbacks: callbacks)
+        let hosting = NSHostingController(rootView: view)
+        self.viewController = hosting
+        super.init()
+
+        // Rewire callbacks to delegate after init
+        var updatedView = view
+        updatedView.callbacks = SettingsCallbacks(
+            onModifierChanged: { [weak self] in self?.delegate?.settingsDidChangeModifiers() },
+            onMouseButtonChanged: { [weak self] in self?.delegate?.settingsDidChangeMouseButton() },
+            onHoverModeToggled: { [weak self] in self?.delegate?.settingsDidToggleHoverMode() },
+            onReset: { [weak self] in self?.delegate?.settingsDidReset() },
+            onQuit: { [weak self] in self?.delegate?.settingsDidQuit() }
+        )
+        hosting.rootView = updatedView
+    }
+
+    @objc func syncFromPreferences() {
+        guard let hosting = viewController as? NSHostingController<SettingsView> else { return }
+        var view = hosting.rootView
+        view.syncFromPreferences()
+        hosting.rootView = view
+    }
+}
 
 @available(macOS 13.0, *)
 struct SettingsCallbacks {
