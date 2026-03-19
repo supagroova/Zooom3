@@ -1,5 +1,7 @@
 #import <Cocoa/Cocoa.h>
 
+@class AccessibilityOnboardingBridge;
+
 @interface EMRAppDelegate : NSObject <NSApplicationDelegate, NSPopoverDelegate> {
     NSStatusItem * statusItem;
     int keyModifierFlags;
@@ -13,6 +15,7 @@
     id popoverEventMonitor;
 
     BOOL cachedHoverModeEnabled;
+    AccessibilityOnboardingBridge *onboardingBridge;
 }
 
 - (int)modifierFlags;

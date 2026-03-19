@@ -505,22 +505,14 @@ CGEventRef myCGEventCallback(CGEventTapProxy __unused proxy, CGEventType type, C
         return;
     }
 
-    const void * keys[] = { kAXTrustedCheckOptionPrompt };
-    const void * values[] = { kCFBooleanTrue };
-
-    CFDictionaryRef options = CFDictionaryCreate(
-            kCFAllocatorDefault,
-            keys,
-            values,
-            sizeof(keys) / sizeof(*keys),
-            &kCFCopyStringDictionaryKeyCallBacks,
-            &kCFTypeDictionaryValueCallBacks);
-
-    if (!AXIsProcessTrustedWithOptions(options)) {
-        NSLog(@"Missing permissions");
-        exit(1);
+    if (AXIsProcessTrusted()) {
+        [self setupEventTapAndObservers];
+    } else {
+        [self showAccessibilityOnboarding];
     }
+}
 
+- (void)setupEventTapAndObservers {
     [self refreshCachedPreferences];
 
     CGEventMask eventMask = [self eventMaskForCurrentPreferences];
@@ -561,6 +553,28 @@ CGEventRef myCGEventCallback(CGEventTapProxy __unused proxy, CGEventType type, C
     [self reconstructDisabledAppsSubmenu];
 }
 
+- (void)showAccessibilityOnboarding {
+    if (@available(macOS 13.0, *)) {
+        onboardingBridge = [[AccessibilityOnboardingBridge alloc] init];
+        __weak typeof(self) weakSelf = self;
+        [onboardingBridge setOnPermissionGranted:^{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf accessibilityPermissionGranted];
+            });
+        }];
+        [onboardingBridge showWindow];
+        [onboardingBridge startPolling];
+    }
+}
+
+- (void)accessibilityPermissionGranted {
+    if (@available(macOS 13.0, *)) {
+        [onboardingBridge closeWindow];
+        onboardingBridge = nil;
+    }
+    [self setupEventTapAndObservers];
+}
+
 - (void)becameActive:(NSNotification*) notification {
     _sessionActive = true;
 }
@@ -590,6 +604,14 @@ CGEventRef myCGEventCallback(CGEventTapProxy __unused proxy, CGEventType type, C
 }
 
 - (void)togglePopover:(id)sender {
+    // During onboarding, re-show the onboarding window instead of settings
+    if (onboardingBridge != nil) {
+        if (@available(macOS 13.0, *)) {
+            [onboardingBridge showWindow];
+        }
+        return;
+    }
+
     [self ensurePopoverCreated];
 
     if (popover.isShown) {

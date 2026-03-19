@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1322FE5C2F62DAB1003A9CF9 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1322FE5B2F62DAB1003A9CF9 /* Preferences.swift */; };
 		1322FE5F2F62DAD7003A9CF9 /* PreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1322FE5E2F62DAD7003A9CF9 /* PreferencesTests.swift */; };
+		DD00000BB000000B000000B1 /* AccessibilityOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD00000CB000000C000000B2 /* AccessibilityOnboardingView.swift */; };
+		DD00000DB000000D000000B3 /* AccessibilityOnboardingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD00000EB000000E000000B4 /* AccessibilityOnboardingTests.swift */; };
 		DD000001A0000001000000A1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000002A0000002000000A2 /* SettingsView.swift */; };
 		DD000003A0000003000000A3 /* SettingsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000004A0000004000000A4 /* SettingsViewTests.swift */; };
 		DD000005A0000005000000A5 /* MoveResize.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000006A0000006000000A6 /* MoveResize.swift */; };
@@ -60,6 +62,8 @@
 		B02F125CE1BC18D269C53372 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		DD000002A0000002000000A2 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DD000004A0000004000000A4 /* SettingsViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewTests.swift; sourceTree = "<group>"; };
+		DD00000CB000000C000000B2 /* AccessibilityOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityOnboardingView.swift; sourceTree = "<group>"; };
+		DD00000EB000000E000000B4 /* AccessibilityOnboardingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityOnboardingTests.swift; sourceTree = "<group>"; };
 		DD000006A0000006000000A6 /* MoveResize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveResize.swift; sourceTree = "<group>"; };
 		DD000008A0000008000000A8 /* MoveResizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveResizeTests.swift; sourceTree = "<group>"; };
 		DD00000AA000000A000000AA /* ResizeTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResizeTypes.h; sourceTree = "<group>"; };
@@ -95,6 +99,7 @@
 				AA0001041A229C34002259F2 /* EMRAppDelegateTest.m */,
 				DD000004A0000004000000A4 /* SettingsViewTests.swift */,
 				DD000008A0000008000000A8 /* MoveResizeTests.swift */,
+				DD00000EB000000E000000B4 /* AccessibilityOnboardingTests.swift */,
 				65CF01661F229C34002259F2 /* Info.plist */,
 			);
 			path = zooom3Tests;
@@ -159,6 +164,7 @@
 				DD000002A0000002000000A2 /* SettingsView.swift */,
 				DD000006A0000006000000A6 /* MoveResize.swift */,
 				DD00000AA000000A000000AA /* ResizeTypes.h */,
+				DD00000CB000000C000000B2 /* AccessibilityOnboardingView.swift */,
 			);
 			path = zooom3;
 			sourceTree = "<group>";
@@ -284,6 +290,7 @@
 				AA0001031A229C34002259F2 /* EMRAppDelegateTest.m in Sources */,
 				1322FE5F2F62DAD7003A9CF9 /* PreferencesTests.swift in Sources */,
 				DD000003A0000003000000A3 /* SettingsViewTests.swift in Sources */,
+				DD00000DB000000D000000B3 /* AccessibilityOnboardingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -296,6 +303,7 @@
 				6ED47B78183BF3E800859244 /* EMRAppDelegate.m in Sources */,
 				DD000005A0000005000000A5 /* MoveResize.swift in Sources */,
 				DD000001A0000001000000A1 /* SettingsView.swift in Sources */,
+				DD00000BB000000B000000B1 /* AccessibilityOnboardingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
