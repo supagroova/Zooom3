@@ -13,6 +13,9 @@ extern CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGE
 - (void)ensurePopoverCreated;
 - (void)installPopoverEventMonitor;
 - (void)removePopoverEventMonitor;
+- (void)handlePermissionRevoked;
+- (void)showAccessibilityOnboarding;
+- (void)togglePopover:(id)sender;
 @end
 
 @interface EMRAppDelegateTest : XCTestCase
@@ -751,6 +754,130 @@ extern CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGE
     XCTAssertEqual([mr tracking], 0, "Tracking should be cleared on mouse-up without hover");
     XCTAssertFalse([mr isResizing], "isResizing should be cleared on mouse-up without hover");
     CFRelease(event);
+}
+
+#pragma mark - Permission revocation: handlePermissionRevoked
+
+- (void)testHandlePermissionRevokedClearsMoveResizeState {
+    MoveResize *mr = [MoveResize instance];
+    [mr setTracking:CACurrentMediaTime()];
+    [mr setIsResizing:YES];
+    [mr setIsHoverActive:YES];
+
+    [delegate handlePermissionRevoked];
+
+    XCTAssertEqual([mr tracking], 0, "tracking should be cleared after permission revoked");
+    XCTAssertFalse([mr isResizing], "isResizing should be cleared after permission revoked");
+    XCTAssertFalse([mr isHoverActive], "isHoverActive should be cleared after permission revoked");
+
+    // Clean up onboarding bridge created by handlePermissionRevoked
+    [delegate setValue:nil forKey:@"onboardingBridge"];
+}
+
+- (void)testHandlePermissionRevokedDeactivatesSession {
+    [delegate setSessionActive:YES];
+
+    [delegate handlePermissionRevoked];
+
+    XCTAssertFalse([delegate sessionActive], "sessionActive should be NO after permission revoked");
+
+    [delegate setValue:nil forKey:@"onboardingBridge"];
+}
+
+- (void)testHandlePermissionRevokedShowsOnboarding {
+    [delegate handlePermissionRevoked];
+
+    id bridge = [delegate valueForKey:@"onboardingBridge"];
+    XCTAssertNotNil(bridge, "onboardingBridge should be created after permission revoked");
+
+    [delegate setValue:nil forKey:@"onboardingBridge"];
+}
+
+- (void)testHandlePermissionRevokedStartsPolling {
+    [delegate handlePermissionRevoked];
+
+    if (@available(macOS 13.0, *)) {
+        AccessibilityOnboardingBridge *bridge = [delegate valueForKey:@"onboardingBridge"];
+        XCTAssertNotNil(bridge, "Precondition: bridge should exist");
+        XCTAssertTrue([bridge isPolling], "Onboarding should be polling for permission after revocation");
+        [bridge stopPolling];
+    }
+
+    [delegate setValue:nil forKey:@"onboardingBridge"];
+}
+
+- (void)testHandlePermissionRevokedSafeWithNullEventTap {
+    // Should not crash when no event tap exists
+    MoveResize *mr = [MoveResize instance];
+    [mr setEventTap:NULL];
+    [mr setRunLoopSource:NULL];
+
+    XCTAssertNoThrow([delegate handlePermissionRevoked], "Should handle NULL event tap gracefully");
+
+    [delegate setValue:nil forKey:@"onboardingBridge"];
+}
+
+- (void)testTogglePopoverDuringOnboardingShowsOnboardingWindow {
+    // Simulate active onboarding
+    [delegate showAccessibilityOnboarding];
+
+    id bridge = [delegate valueForKey:@"onboardingBridge"];
+    XCTAssertNotNil(bridge, "Precondition: onboarding bridge should exist");
+
+    // togglePopover should re-show onboarding, not create settings popover
+    [delegate togglePopover:nil];
+
+    NSPopover *popover = [delegate valueForKey:@"popover"];
+    XCTAssertNil(popover, "Settings popover should NOT be created during onboarding");
+
+    if (@available(macOS 13.0, *)) {
+        AccessibilityOnboardingBridge *onboarding = bridge;
+        [onboarding stopPolling];
+    }
+    [delegate setValue:nil forKey:@"onboardingBridge"];
+}
+
+- (void)testHandlePermissionRevokedRemovesWorkspaceObservers {
+    // Manually register workspace observers (simulating setupEventTapAndObservers)
+    NSNotificationCenter *wsnc = [[NSWorkspace sharedWorkspace] notificationCenter];
+    [wsnc addObserver:delegate
+             selector:@selector(becameActive:)
+                 name:NSWorkspaceSessionDidBecomeActiveNotification
+               object:nil];
+    [wsnc addObserver:delegate
+             selector:@selector(becameInactive:)
+                 name:NSWorkspaceSessionDidResignActiveNotification
+               object:nil];
+
+    // handlePermissionRevoked should remove those observers
+    [delegate handlePermissionRevoked];
+
+    // Reset sessionActive so we can detect whether becameInactive: fires
+    [delegate setSessionActive:YES];
+
+    // Post a resign notification — if observers were removed, sessionActive stays YES
+    [wsnc postNotificationName:NSWorkspaceSessionDidResignActiveNotification object:nil];
+    XCTAssertTrue([delegate sessionActive],
+                  "becameInactive: should NOT fire after handlePermissionRevoked removes observers");
+
+    if (@available(macOS 13.0, *)) {
+        AccessibilityOnboardingBridge *bridge = [delegate valueForKey:@"onboardingBridge"];
+        [bridge stopPolling];
+    }
+    [delegate setValue:nil forKey:@"onboardingBridge"];
+}
+
+- (void)testHandlePermissionRevokedTwiceDoesNotCrash {
+    // Calling handlePermissionRevoked multiple times should be safe
+    // (e.g. if multiple kCGEventTapDisabledByTimeout events fire before main queue processes)
+    [delegate handlePermissionRevoked];
+    XCTAssertNoThrow([delegate handlePermissionRevoked], "Double revocation should not crash");
+
+    if (@available(macOS 13.0, *)) {
+        AccessibilityOnboardingBridge *bridge = [delegate valueForKey:@"onboardingBridge"];
+        [bridge stopPolling];
+    }
+    [delegate setValue:nil forKey:@"onboardingBridge"];
 }
 
 @end
