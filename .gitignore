@@ -27,3 +27,7 @@ DerivedData
 
 # mardown previews
 *.md.html
+
+# Build artifacts
+Preferences.o 
+test_swift_objc
