@@ -1,5 +1,5 @@
 #import "EMRAppDelegate.h"
-#import "EMRMoveResize.h"
+#import "ResizeTypes.h"
 #import "Zooom3-Swift.h"
 
 #define ALL_MODIFIERS (kCGEventFlagMaskShift | kCGEventFlagMaskCommand | \
@@ -14,11 +14,11 @@
 @end
 
 /* Capture the window at the given screen point via the Accessibility API.
- * Sets wndPosition (and optionally wndSize + resizeSection for resize) on EMRMoveResize.
+ * Sets wndPosition (and optionally wndSize + resizeSection for resize) on MoveResize.
  * Returns YES if a window was captured, NO if no valid window was found (e.g. desktop,
  * disabled app, or AX failure). */
 static BOOL captureWindowAtPoint(CGPoint mouseLocation, EMRAppDelegate *ourDelegate, BOOL forResize) {
-    EMRMoveResize *moveResize = [EMRMoveResize instance];
+    MoveResize *moveResize = [MoveResize instance];
 
     AXUIElementRef _systemWideElement = AXUIElementCreateSystemWide();
     AXUIElementRef _clickedWindow = NULL;
@@ -187,7 +187,7 @@ float getMinRefreshInterval(void) {
 }
 
 - (void)recreateEventTap {
-    EMRMoveResize *moveResize = [EMRMoveResize instance];
+    MoveResize *moveResize = [MoveResize instance];
 
     // Tear down existing tap
     if ([moveResize eventTap] != NULL) {
@@ -222,7 +222,7 @@ CGEventRef myCGEventCallback(CGEventTapProxy __unused proxy, CGEventType type, C
 
     // Re-enable tap if it was disabled (usually happens on a slow resizing app)
     if ((type == kCGEventTapDisabledByTimeout || type == kCGEventTapDisabledByUserInput)) {
-        EMRMoveResize* mr = [EMRMoveResize instance];
+        MoveResize* mr = [MoveResize instance];
         CGEventTapEnable([mr eventTap], true);
         return event;
     }
@@ -244,7 +244,7 @@ CGEventRef myCGEventCallback(CGEventTapProxy __unused proxy, CGEventType type, C
     }
 
     CGEventFlags flags = CGEventGetFlags(event);
-    EMRMoveResize *moveResize = [EMRMoveResize instance];
+    MoveResize *moveResize = [MoveResize instance];
 
     // Check if flags match each modifier set with no extra modifiers
     BOOL moveModifiersMatch = NO;
@@ -539,7 +539,7 @@ CGEventRef myCGEventCallback(CGEventTapProxy __unused proxy, CGEventType type, C
 
     CFRunLoopSourceRef runLoopSource = CFMachPortCreateRunLoopSource(kCFAllocatorDefault, eventTap, 0);
 
-    EMRMoveResize *moveResize = [EMRMoveResize instance];
+    MoveResize *moveResize = [MoveResize instance];
     [moveResize setEventTap:eventTap];
     [moveResize setRunLoopSource:runLoopSource];
     [self enableRunLoopSource:moveResize];
@@ -624,12 +624,12 @@ CGEventRef myCGEventCallback(CGEventTapProxy __unused proxy, CGEventType type, C
     [self removePopoverEventMonitor];
 }
 
-- (void)enableRunLoopSource:(EMRMoveResize*)moveResize {
+- (void)enableRunLoopSource:(MoveResize*)moveResize {
     CFRunLoopAddSource(CFRunLoopGetCurrent(), [moveResize runLoopSource], kCFRunLoopCommonModes);
     CGEventTapEnable([moveResize eventTap], true);
 }
 
-- (void)disableRunLoopSource:(EMRMoveResize*)moveResize {
+- (void)disableRunLoopSource:(MoveResize*)moveResize {
     CGEventTapEnable([moveResize eventTap], false);
     CFRunLoopRemoveSource(CFRunLoopGetCurrent(), [moveResize runLoopSource], kCFRunLoopCommonModes);
 }
@@ -646,7 +646,7 @@ CGEventRef myCGEventCallback(CGEventTapProxy __unused proxy, CGEventType type, C
 
 - (void)settingsDidToggleHoverMode {
     if (!preferences.hoverModeEnabled) {
-        EMRMoveResize *moveResize = [EMRMoveResize instance];
+        MoveResize *moveResize = [MoveResize instance];
         [moveResize setIsHoverActive:NO];
         [moveResize setTracking:0];
         [moveResize setIsResizing:NO];
@@ -656,7 +656,7 @@ CGEventRef myCGEventCallback(CGEventTapProxy __unused proxy, CGEventType type, C
 }
 
 - (void)settingsDidReset {
-    EMRMoveResize *moveResize = [EMRMoveResize instance];
+    MoveResize *moveResize = [MoveResize instance];
     [moveResize setIsHoverActive:NO];
     [moveResize setTracking:0];
     [moveResize setIsResizing:NO];

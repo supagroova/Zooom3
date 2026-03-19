@@ -1,6 +1,6 @@
 #import <XCTest/XCTest.h>
 #import "EMRAppDelegate.h"
-#import "EMRMoveResize.h"
+#import "ResizeTypes.h"
 #import "Zooom3-Swift.h"
 
 // The callback is a C function with external linkage in EMRAppDelegate.m
@@ -26,8 +26,8 @@ extern CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGE
 - (void)setUp {
     [super setUp];
     delegate = [[EMRAppDelegate alloc] init];
-    // Reset EMRMoveResize singleton state
-    EMRMoveResize *mr = [EMRMoveResize instance];
+    // Reset MoveResize singleton state
+    MoveResize *mr = [MoveResize instance];
     [mr setTracking:0];
     [mr setIsResizing:NO];
     [mr setIsHoverActive:NO];
@@ -271,7 +271,7 @@ extern CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGE
     [self setCachedResizeButton:1 /* MouseButton.right */];
 
     // Simulate an active tracking session (as if mouse-down already happened)
-    EMRMoveResize *mr = [EMRMoveResize instance];
+    MoveResize *mr = [MoveResize instance];
     [mr setTracking:CACurrentMediaTime()];
     [mr setIsResizing:YES];
 
@@ -296,7 +296,7 @@ extern CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGE
     [self setCachedMoveButton:0 /* MouseButton.left */];
     [self setCachedResizeButton:1 /* MouseButton.right */];
 
-    EMRMoveResize *mr = [EMRMoveResize instance];
+    MoveResize *mr = [MoveResize instance];
     [mr setTracking:CACurrentMediaTime()];
     [mr setIsResizing:YES];
 
@@ -318,7 +318,7 @@ extern CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGE
     [self setCachedMoveButton:0 /* MouseButton.left */];
     [self setCachedResizeButton:1 /* MouseButton.right */];
 
-    EMRMoveResize *mr = [EMRMoveResize instance];
+    MoveResize *mr = [MoveResize instance];
     [mr setTracking:0]; // No active tracking
 
     CGEventRef event = [self createMouseEvent:kCGEventLeftMouseUp flags:0];
@@ -344,7 +344,7 @@ extern CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGE
 }
 
 // Note: kCGEventTapDisabledByTimeout handling cannot be tested without a real event tap,
-// as the callback calls CGEventTapEnable([EMRMoveResize instance].eventTap, true)
+// as the callback calls CGEventTapEnable([MoveResize instance].eventTap, true)
 // which crashes on a NULL event tap reference.
 
 #pragma mark - Callback: conflict resolution (both match → resize wins)
@@ -372,7 +372,7 @@ extern CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGE
     CGEventRef event = [self createMouseEvent:kCGEventLeftMouseDown flags:flags];
     CGEventRef result = myCGEventCallback(NULL, kCGEventLeftMouseDown, event, (__bridge void *)delegate);
 
-    EMRMoveResize *mr = [EMRMoveResize instance];
+    MoveResize *mr = [MoveResize instance];
     // The resize path was entered (AX size query ran and failed, clearing tracking)
     // If move had been chosen, tracking would still be > 0 (move path doesn't query size)
     XCTAssertTrue(result == NULL, "Conflicting event should be consumed (not passed through)");
@@ -397,7 +397,7 @@ extern CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGE
     CGEventRef event = [self createMouseEvent:kCGEventLeftMouseDown flags:moveFlags];
     myCGEventCallback(NULL, kCGEventLeftMouseDown, event, (__bridge void *)delegate);
 
-    EMRMoveResize *mr = [EMRMoveResize instance];
+    MoveResize *mr = [MoveResize instance];
     // Move matched, resize didn't → isResizing should be NO
     XCTAssertFalse([mr isResizing], "Move modifiers should match but resize should not — isResizing should be NO");
 
@@ -422,7 +422,7 @@ extern CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGE
     CGEventRef event = [self createMouseEvent:kCGEventLeftMouseDown flags:resizeFlags];
     CGEventRef result = myCGEventCallback(NULL, kCGEventLeftMouseDown, event, (__bridge void *)delegate);
 
-    EMRMoveResize *mr = [EMRMoveResize instance];
+    MoveResize *mr = [MoveResize instance];
     XCTAssertTrue(result == NULL, "Resize-matching event should be consumed (not passed through)");
     XCTAssertEqual([mr tracking], 0, "Resize path AX failure clears tracking, confirming resize was chosen");
 
@@ -440,7 +440,7 @@ extern CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGE
     [self setCachedResizeButton:1 /* MouseButton.right */];
 
     // Simulate active move tracking
-    EMRMoveResize *mr = [EMRMoveResize instance];
+    MoveResize *mr = [MoveResize instance];
     [mr setTracking:CACurrentMediaTime()];
     [mr setIsResizing:NO];
     [mr setWndPosition:NSMakePoint(100, 100)];
@@ -468,7 +468,7 @@ extern CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGE
     [self setCachedResizeButton:1 /* MouseButton.right */];
 
     // Simulate active resize tracking
-    EMRMoveResize *mr = [EMRMoveResize instance];
+    MoveResize *mr = [MoveResize instance];
     [mr setTracking:CACurrentMediaTime()];
     [mr setIsResizing:YES];
     [mr setWndPosition:NSMakePoint(100, 100)];
@@ -502,7 +502,7 @@ extern CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGE
     CGEventRef leftEvent = [self createMouseEvent:kCGEventLeftMouseDown flags:flags];
     myCGEventCallback(NULL, kCGEventLeftMouseDown, leftEvent, (__bridge void *)delegate);
 
-    EMRMoveResize *mr = [EMRMoveResize instance];
+    MoveResize *mr = [MoveResize instance];
     XCTAssertFalse([mr isResizing], "Left-click should match move (not resize) when resize is middle-click");
 
     [mr setTracking:0];
@@ -534,7 +534,7 @@ extern CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGE
     CGEventRef result = myCGEventCallback(NULL, kCGEventFlagsChanged, event, (__bridge void *)delegate);
 
     XCTAssertEqual(result, event, "Flags changed should pass through when hover mode is disabled");
-    EMRMoveResize *mr = [EMRMoveResize instance];
+    MoveResize *mr = [MoveResize instance];
     XCTAssertFalse([mr isHoverActive], "isHoverActive should remain NO when hover disabled");
     CFRelease(event);
 }
@@ -553,7 +553,7 @@ extern CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGE
     XCTAssertEqual(result, event, "kCGEventFlagsChanged should always return event (never swallowed)");
 
     // Cleanup
-    EMRMoveResize *mr = [EMRMoveResize instance];
+    MoveResize *mr = [MoveResize instance];
     [mr setIsHoverActive:NO];
     [mr setTracking:0];
     CFRelease(event);
@@ -568,7 +568,7 @@ extern CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGE
     [self setCachedResizeButton:1 /* MouseButton.right */];
 
     // Simulate active hover
-    EMRMoveResize *mr = [EMRMoveResize instance];
+    MoveResize *mr = [MoveResize instance];
     [mr setTracking:CACurrentMediaTime()];
     [mr setIsHoverActive:YES];
     [mr setIsResizing:NO];
@@ -599,7 +599,7 @@ extern CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGE
     CGEventRef event = [self createFlagsChangedEvent:kCGEventFlagMaskCommand | kCGEventFlagMaskControl];
     myCGEventCallback(NULL, kCGEventFlagsChanged, event, (__bridge void *)delegate);
 
-    EMRMoveResize *mr = [EMRMoveResize instance];
+    MoveResize *mr = [MoveResize instance];
     XCTAssertFalse([mr isHoverActive], "Hover move should not activate when resizeOnly is ON");
 
     [prefs setBool:NO forKey:@"ResizeOnly"];
@@ -614,7 +614,7 @@ extern CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGE
     [self setCachedMoveModifiers:kCGEventFlagMaskCommand | kCGEventFlagMaskControl];
     [self setCachedResizeModifiers:kCGEventFlagMaskCommand | kCGEventFlagMaskControl];
 
-    EMRMoveResize *mr = [EMRMoveResize instance];
+    MoveResize *mr = [MoveResize instance];
     [mr setIsHoverActive:NO];
     [mr setTracking:0];
 
@@ -632,7 +632,7 @@ extern CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGE
     [self setCachedMoveModifiers:kCGEventFlagMaskCommand | kCGEventFlagMaskControl];
     [self setCachedResizeModifiers:kCGEventFlagMaskCommand | kCGEventFlagMaskControl];
 
-    EMRMoveResize *mr = [EMRMoveResize instance];
+    MoveResize *mr = [MoveResize instance];
     [mr setTracking:CACurrentMediaTime()];
     [mr setIsHoverActive:YES];
     [mr setIsResizing:NO];
@@ -656,7 +656,7 @@ extern CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGE
     [self setCachedResizeModifiers:kCGEventFlagMaskCommand | kCGEventFlagMaskControl];
     [delegate setMoveFilterInterval:0]; // No throttle for testing
 
-    EMRMoveResize *mr = [EMRMoveResize instance];
+    MoveResize *mr = [MoveResize instance];
     [mr setTracking:CACurrentMediaTime() - 1]; // Started 1 sec ago
     [mr setIsHoverActive:YES];
     [mr setIsResizing:NO];
@@ -686,7 +686,7 @@ extern CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGE
     [self setCachedMoveButton:0 /* MouseButton.left */];
     [self setCachedResizeButton:1 /* MouseButton.right */];
 
-    EMRMoveResize *mr = [EMRMoveResize instance];
+    MoveResize *mr = [MoveResize instance];
     CFTimeInterval startTime = CACurrentMediaTime();
     [mr setTracking:startTime];
     [mr setIsHoverActive:YES];
@@ -740,7 +740,7 @@ extern CGEventRef myCGEventCallback(CGEventTapProxy proxy, CGEventType type, CGE
     [self setCachedMoveButton:0 /* MouseButton.left */];
     [self setCachedResizeButton:1 /* MouseButton.right */];
 
-    EMRMoveResize *mr = [EMRMoveResize instance];
+    MoveResize *mr = [MoveResize instance];
     [mr setTracking:CACurrentMediaTime()];
     [mr setIsHoverActive:NO];
     [mr setIsResizing:YES];

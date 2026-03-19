@@ -11,16 +11,16 @@
 		1322FE5F2F62DAD7003A9CF9 /* PreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1322FE5E2F62DAD7003A9CF9 /* PreferencesTests.swift */; };
 		DD000001A0000001000000A1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000002A0000002000000A2 /* SettingsView.swift */; };
 		DD000003A0000003000000A3 /* SettingsViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000004A0000004000000A4 /* SettingsViewTests.swift */; };
+		DD000005A0000005000000A5 /* MoveResize.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000006A0000006000000A6 /* MoveResize.swift */; };
+		DD000007A0000007000000A7 /* MoveResizeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD000008A0000008000000A8 /* MoveResizeTests.swift */; };
 		6ED47B65183BF3E800859244 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ED47B64183BF3E800859244 /* Cocoa.framework */; };
 		6ED47B6F183BF3E800859244 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6ED47B6D183BF3E800859244 /* InfoPlist.strings */; };
 		6ED47B71183BF3E800859244 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ED47B70183BF3E800859244 /* main.m */; };
 		6ED47B78183BF3E800859244 /* EMRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6ED47B77183BF3E800859244 /* EMRAppDelegate.m */; };
 		6ED47B7B183BF3E800859244 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6ED47B79183BF3E800859244 /* MainMenu.xib */; };
 		6ED47B7D183BF3E800859244 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6ED47B7C183BF3E800859244 /* Images.xcassets */; };
-		AA0001011A229C34002259F2 /* EMRMoveResizeTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0001021A229C34002259F2 /* EMRMoveResizeTest.m */; };
 		AA0001031A229C34002259F2 /* EMRAppDelegateTest.m in Sources */ = {isa = PBXBuildFile; fileRef = AA0001041A229C34002259F2 /* EMRAppDelegateTest.m */; };
 		B02F18934323BB42D8CCAB05 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B02F125CE1BC18D269C53372 /* QuartzCore.framework */; };
-		F907A25928093AED2C89550E /* EMRMoveResize.m in Sources */ = {isa = PBXBuildFile; fileRef = F907AEB04B0AF90540F6EF00 /* EMRMoveResize.m */; };
 		F907A53FB2CAEBEB31895CD2 /* contributing.md in Resources */ = {isa = PBXBuildFile; fileRef = F907A3568D9301F4E6A9736F /* contributing.md */; };
 		F907ABDDEEAF5BF83F0AF9EA /* readme.md in Resources */ = {isa = PBXBuildFile; fileRef = F907A4D20267246716869421 /* readme.md */; };
 /* End PBXBuildFile section */
@@ -56,17 +56,17 @@
 		6ED47B77183BF3E800859244 /* EMRAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMRAppDelegate.m; sourceTree = "<group>"; };
 		6ED47B7C183BF3E800859244 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		6ED47B83183BF3E800859244 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		AA0001021A229C34002259F2 /* EMRMoveResizeTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMRMoveResizeTest.m; sourceTree = "<group>"; };
 		AA0001041A229C34002259F2 /* EMRAppDelegateTest.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = EMRAppDelegateTest.m; sourceTree = "<group>"; };
 		B02F125CE1BC18D269C53372 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		DD000002A0000002000000A2 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DD000004A0000004000000A4 /* SettingsViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewTests.swift; sourceTree = "<group>"; };
+		DD000006A0000006000000A6 /* MoveResize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveResize.swift; sourceTree = "<group>"; };
+		DD000008A0000008000000A8 /* MoveResizeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveResizeTests.swift; sourceTree = "<group>"; };
+		DD00000AA000000A000000AA /* ResizeTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ResizeTypes.h; sourceTree = "<group>"; };
 		F907A0E10208B2B4C63E46E3 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		F907A3568D9301F4E6A9736F /* contributing.md */ = {isa = PBXFileReference; lastKnownFileType = file.md; path = contributing.md; sourceTree = "<group>"; };
 		F907A4D20267246716869421 /* readme.md */ = {isa = PBXFileReference; lastKnownFileType = file.md; path = readme.md; sourceTree = "<group>"; };
 		F907AB0E17E61960C00A089F /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = file.gitignore; path = .gitignore; sourceTree = "<group>"; };
-		F907ACD4ED7B8961880D12BD /* EMRMoveResize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EMRMoveResize.h; sourceTree = "<group>"; };
-		F907AEB04B0AF90540F6EF00 /* EMRMoveResize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EMRMoveResize.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,9 +92,9 @@
 		65CF01631F229C34002259F2 /* zooom3Tests */ = {
 			isa = PBXGroup;
 			children = (
-				AA0001021A229C34002259F2 /* EMRMoveResizeTest.m */,
 				AA0001041A229C34002259F2 /* EMRAppDelegateTest.m */,
 				DD000004A0000004000000A4 /* SettingsViewTests.swift */,
+				DD000008A0000008000000A8 /* MoveResizeTests.swift */,
 				65CF01661F229C34002259F2 /* Info.plist */,
 			);
 			path = zooom3Tests;
@@ -156,9 +156,9 @@
 				6ED47B79183BF3E800859244 /* MainMenu.xib */,
 				6ED47B7C183BF3E800859244 /* Images.xcassets */,
 				6ED47B6B183BF3E800859244 /* Supporting Files */,
-				F907ACD4ED7B8961880D12BD /* EMRMoveResize.h */,
-				F907AEB04B0AF90540F6EF00 /* EMRMoveResize.m */,
 				DD000002A0000002000000A2 /* SettingsView.swift */,
+				DD000006A0000006000000A6 /* MoveResize.swift */,
+				DD00000AA000000A000000AA /* ResizeTypes.h */,
 			);
 			path = zooom3;
 			sourceTree = "<group>";
@@ -280,7 +280,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA0001011A229C34002259F2 /* EMRMoveResizeTest.m in Sources */,
+				DD000007A0000007000000A7 /* MoveResizeTests.swift in Sources */,
 				AA0001031A229C34002259F2 /* EMRAppDelegateTest.m in Sources */,
 				1322FE5F2F62DAD7003A9CF9 /* PreferencesTests.swift in Sources */,
 				DD000003A0000003000000A3 /* SettingsViewTests.swift in Sources */,
@@ -294,7 +294,7 @@
 				6ED47B71183BF3E800859244 /* main.m in Sources */,
 				1322FE5C2F62DAB1003A9CF9 /* Preferences.swift in Sources */,
 				6ED47B78183BF3E800859244 /* EMRAppDelegate.m in Sources */,
-				F907A25928093AED2C89550E /* EMRMoveResize.m in Sources */,
+				DD000005A0000005000000A5 /* MoveResize.swift in Sources */,
 				DD000001A0000001000000A1 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
