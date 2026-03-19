@@ -222,6 +222,12 @@ CGEventRef myCGEventCallback(CGEventTapProxy __unused proxy, CGEventType type, C
 
     // Re-enable tap if it was disabled (usually happens on a slow resizing app)
     if ((type == kCGEventTapDisabledByTimeout || type == kCGEventTapDisabledByUserInput)) {
+        if (!AXIsProcessTrusted()) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [ourDelegate handlePermissionRevoked];
+            });
+            return event;
+        }
         MoveResize* mr = [MoveResize instance];
         CGEventTapEnable([mr eventTap], true);
         return event;
@@ -565,6 +571,26 @@ CGEventRef myCGEventCallback(CGEventTapProxy __unused proxy, CGEventType type, C
         [onboardingBridge showWindow];
         [onboardingBridge startPolling];
     }
+}
+
+- (void)handlePermissionRevoked {
+    MoveResize *moveResize = [MoveResize instance];
+
+    // Cancel any active move/resize operation
+    [moveResize setIsHoverActive:NO];
+    [moveResize setTracking:0];
+    [moveResize setIsResizing:NO];
+
+    // Tear down the event tap
+    if ([moveResize eventTap] != NULL) {
+        [self disableRunLoopSource:moveResize];
+        [moveResize setEventTap:NULL];
+        [moveResize setRunLoopSource:NULL];
+    }
+
+    _sessionActive = false;
+
+    [self showAccessibilityOnboarding];
 }
 
 - (void)accessibilityPermissionGranted {
